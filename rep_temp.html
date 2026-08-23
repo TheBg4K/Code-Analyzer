@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Analysis Report - {{PROJECT_NAME}}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e2f;
+            color: #e0e0e0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1, h2, h3 { color: #ff6b6b; margin-bottom: 15px; }
+        h1 { font-size: 2.5em; text-align: center; }
+        h2 { font-size: 1.8em; border-bottom: 2px solid #ff6b6b; padding-bottom: 5px; margin-top: 30px; }
+        .meta { text-align: center; color: #aaa; margin-bottom: 30px; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #2a2a3d;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .stat-card .number {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #4ecdc4;
+        }
+        .stat-card .label { color: #aaa; font-size: 0.9em; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #2a2a3d;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+        th { background: #3a3a4d; color: #ff6b6b; }
+        tr:hover { background: #333348; }
+        .bar-container { background: #444; border-radius: 4px; height: 15px; width: 100%; }
+        .bar { background: linear-gradient(90deg, #4ecdc4, #ff6b6b); height: 100%; border-radius: 4px; }
+        ul { list-style-type: none; padding-left: 20px; }
+        li { margin: 5px 0; }
+        .footer { text-align: center; margin-top: 30px; color: #666; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Code Analysis Report: {{PROJECT_NAME}}</h1>
+        <div class="meta">Generated on {{ANALYSIS_DATE}}</div>
+        
+        <h2>Overview</h2>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="number">{{TOTAL_FILES}}</div><div class="label">Total Files</div></div>
+            <div class="stat-card"><div class="number">{{TOTAL_LINES}}</div><div class="label">Total Lines</div></div>
+            <div class="stat-card"><div class="number">{{TOTAL_CODE_LINES}}</div><div class="label">Code Lines</div></div>
+            <div class="stat-card"><div class="number">{{TOTAL_COMMENT_LINES}}</div><div class="label">Comment Lines</div></div>
+            <div class="stat-card"><div class="number">{{TOTAL_BLANK_LINES}}</div><div class="label">Blank Lines</div></div>
+            <div class="stat-card"><div class="number">{{TOTAL_MIXED_LINES}}</div><div class="label">Mixed Lines</div></div>
+            <div class="stat-card"><div class="number">{{TOTAL_CHARACTERS}}</div><div class="label">Total Characters</div></div>
+            <div class="stat-card"><div class="number">{{TOTAL_FUNCTIONS}}</div><div class="label">Functions</div></div>
+            <div class="stat-card"><div class="number">{{TOTAL_CLASSES}}</div><div class="label">Classes</div></div>
+        </div>
+        
+        <h2>Language Statistics</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Language</th>
+                    <th>Files</th>
+                    <th>Lines</th>
+                    <th>Code</th>
+                    <th>Blank</th>
+                    <th>Comments</th>
+                    <th>Mixed</th>
+                    <th>Characters</th>
+                    <th>% Lines</th>
+                    <th>Comment Ratio</th>
+                    <th>Distribution</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{LANG_ROWS}}
+            </tbody>
+        </table>
+        
+        <h2>Comment Statistics</h2>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="number">{{TOTAL_SINGLE_COMMENTS}}</div><div class="label">Single-line Comments</div></div>
+            <div class="stat-card"><div class="number">{{TOTAL_MULTI_COMMENTS}}</div><div class="label">Multi-line Comments</div></div>
+            <div class="stat-card"><div class="number">{{OVERALL_COMMENT_RATIO}}</div><div class="label">Comment to Code Ratio</div></div>
+            <div class="stat-card"><div class="number">{{AVG_COMMENTS_PER_FILE}}</div><div class="label">Avg Comments per File</div></div>
+        </div>
+        
+        <h2>Line Statistics</h2>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="number">{{OVERALL_AVG_LINE_LENGTH}}</div><div class="label">Average Line Length</div></div>
+            <div class="stat-card"><div class="number">{{LONGEST_LINE_OVERALL}}</div><div class="label">Longest Line</div></div>
+            <div class="stat-card"><div class="number">{{SHORTEST_LINE_OVERALL}}</div><div class="label">Shortest Non-blank Line</div></div>
+            <div class="stat-card"><div class="number">{{DUPLICATE_LINE_RATIO}}</div><div class="label">Duplicate Line Ratio</div></div>
+        </div>
+        <table>
+            <thead><tr><th>Length Range</th><th>Count</th></tr></thead>
+            <tbody>{{LINE_LENGTH_BUCKETS}}</tbody>
+        </table>
+        
+        <h2>File Highlights</h2>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="number">{{LARGEST_FILE_BY_LINES}}</div><div class="label">Largest File (lines)</div></div>
+            <div class="stat-card"><div class="number">{{SMALLEST_FILE_BY_LINES}}</div><div class="label">Smallest File (lines)</div></div>
+            <div class="stat-card"><div class="number">{{LARGEST_FILE_BY_SIZE}}</div><div class="label">Largest File (size)</div></div>
+        </div>
+        
+        <h3>Files with >500 Lines</h3>
+        {{FILES_OVER_500}}
+        
+        <h3>Empty Files</h3>
+        {{EMPTY_FILES}}
+        
+        <h3>Files Without Comments</h3>
+        {{FILES_WITHOUT_COMMENTS}}
+        
+        <h3>Top 10 Files with Most Comments</h3>
+        {{FILES_WITH_MOST_COMMENTS}}
+        
+        <h2>Performance</h2>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="number">{{TOTAL_ANALYSIS_TIME}}s</div><div class="label">Total Analysis Time</div></div>
+            <div class="stat-card"><div class="number">{{SLOWEST_FILE}}</div><div class="label">Slowest File</div></div>
+            <div class="stat-card"><div class="number">{{FASTEST_FILE}}</div><div class="label">Fastest File</div></div>
+        </div>
+        
+        <div class="footer">Generated by Code Analyzer</div>
+    </div>
+</body>
+</html>
